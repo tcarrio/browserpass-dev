@@ -4,13 +4,13 @@ pkgver=1.0.6
 pkgrel=2
 pkgdesc="Chrome & Firefox browser extension for pass, a UNIX password manager"
 arch=('i686' 'x86_64')
-url="https://github.com/dannyvankooten/browserpass"
+url="https://github.com/tcarrio/browserpass"
 license=('MIT')
 depends=('pass')
 makedepends=('go')
 optdepends=()
-source=("$pkgname-$pkgver.tar.gz::https://github.com/dannyvankooten/browserpass/archive/$pkgver.tar.gz")
-md5sums=('fa33f9c4cea5597a9632a527dabd576f')
+source=("git+https://github.com/tcarrio/browserpass.git#branch=copy-pass-login-buttons")
+md5sums=('SKIP')
 
 build() {
 	export GOPATH="$(pwd)/.go"
@@ -18,14 +18,14 @@ build() {
 	go_pkgname="github.com/dannyvankooten/browserpass"
 	go_pkgpath="$GOPATH/src/$go_pkgname"
 	mkdir -p "$(dirname $go_pkgpath)"
-	ln -s "$srcdir/$pkgname-$pkgver" "$go_pkgpath"
+	ln -s "$srcdir/$pkgname" "$go_pkgpath"
 
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "$srcdir/$pkgname"
 	make browserpass static-files
 }
 
 package() {
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "$srcdir/$pkgname"
 
 	install -D browserpass "$pkgdir/usr/bin/browserpass"
 
